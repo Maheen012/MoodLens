@@ -5,24 +5,29 @@ cd "$(dirname "$0")"
 
 echo "Starting MoodLens Services..."
 
-# start server and simultaneously run following script commands
 npm start &
 
-# Save pid of npm start to kill later
+# Save pid of the process to kill later
 NPM_PID=$!
 
-echo "Waiting for servers to wake up (5 seconds)..."
+echo "Waiting for Vite & Uvicorn to initialize (5s)..."
 sleep 5
 
-# open browser
-echo "Opening Browser..."
+# Open browser based on OS
+echo "Opening MoodLens..."
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    open http://localhost:5500
+    # macOS
+    open http://localhost:5173
 elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    xdg-open http://localhost:5500
+    # Linux
+    xdg-open http://localhost:5173
+elif [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
+    # Windows (Git Bash)
+    start http://localhost:5173
 fi
 
-echo "MoodLens is running! Close this terminal to stop the servers."
+echo "✅ MoodLens is running at http://localhost:5173"
+echo "💡 Close this terminal to stop the servers."
 
-# keep script alive so background process doesn't get orphaned
+# Keep script alive
 wait $NPM_PID

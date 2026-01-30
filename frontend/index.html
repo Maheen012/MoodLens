@@ -1,73 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MoodLens | Mental Health Tracker</title>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body class="forest-theme">
-
-    <div id="crisisModal" class="modal">
-        <div class="modal-content">
-            <h2 class="alert-title">We’re here for you 🧡</h2>
-            <p>Our system noticed you've been having a consistently difficult time lately. Please know that support is available across Canada.</p>
-            
-            <a href="https://www.canada.ca/en/public-health/services/mental-health-services/mental-health-get-help.html" 
-               target="_blank" 
-               class="resource-btn">
-               Find Help in Your Province
-            </a>
-            
-            <button onclick="closeModal()" class="close-btn">Dismiss for now</button>
-        </div>
-    </div>
-
-    <nav class="navbar">
-        <div class="logo">MOOD<span>LENS</span></div>
-        <div class="nav-links">
-            <a href="index.html" class="active">My Mood</a>
-            <a href="entries.html">Journal History</a>
-        </div>
-    </nav>
-
-    <header class="main-header">
-        <h1 class="big-title">MoodLens</h1>
-        <p class="subtitle">AI-Powered Mental Health Tracker</p>
-    </header>
-
-    <main class="dashboard-grid">
-        <div class="left-panel">
-            <section class="card input-section">
-                <h3>Log Your State</h3>
-                <div class="slider-group">
-                    <label for="mood">Current Mood: <span id="moodVal">5</span></label>
-                    <input type="range" id="mood" min="1" max="10" value="5" oninput="moodVal.innerText=this.value">
-                </div>
-
-                <div class="slider-group">
-                    <label for="stress">Stress Level: <span id="stressVal">5</span></label>
-                    <input type="range" id="stress" min="1" max="10" value="5" oninput="stressVal.innerText=this.value">
-                </div>
-
-                <label for="journal">What's on your mind?</label>
-                <textarea id="journal" rows="8" placeholder="Share your thoughts or anything on your mind..."></textarea>
-
-                <button id="submitBtn">Save & Analyze</button>
-            </section>
-        </div>
-
-        <div class="right-panel">
-            <section id="aiResponseSection" class="card ai-card">
-                <h3>Suggestions</h3>
-                <div id="aiReflection" class="reflection-box">
-                    <p class="placeholder-text">Your personalized exercise will appear here...</p>
-                </div>
-            </section>
-        </div>
-    </main>
-
-    <script src="main.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>frontend</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>

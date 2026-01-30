@@ -6,7 +6,7 @@
 "scripts": {
   "start:backend": "uvicorn backend.main:app --reload",
   "start:frontend": "cd frontend && python -m http.server 5500",
-  "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\" \"timeout 3 && start http://localhost:5500\""
+  "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\""
 },
   "repository": {
     "type": "git",

@@ -1,37 +1,78 @@
 const API_URL = "http://127.0.0.1:8000"; 
-// Submit journal entry
+
 async function submitEntry() {
     const mood = document.getElementById("mood").value;
+    const stress = document.getElementById("stress").value;
     const journal = document.getElementById("journal").value;
+    const submitBtn = document.getElementById("submitBtn");
 
-    const response = await fetch(`${API_URL}/submit`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mood: parseInt(mood), journal })
-    });
+    if (!journal.trim()) {
+        alert("Please write something in your journal!");
+        return;
+    }
 
-    const data = await response.json();
-    document.getElementById("aiReflection").innerText = data.ai_reflection;
-    fetchTrends(); // Refresh trends
+    submitBtn.innerText = "Processing...";
+    submitBtn.disabled = true;
+
+    try {
+        const response = await fetch(`${API_URL}/submit`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ 
+                mood: parseInt(mood), 
+                stress: parseInt(stress), 
+                journal 
+            })
+        });
+
+        const data = await response.json();
+        
+        const aiSection = document.getElementById("aiResponseSection");
+        const aiBox = document.getElementById("aiReflection");
+        aiSection.classList.remove("hidden");
+        aiBox.innerHTML = marked.parse(data.ai_reflection);
+
+        if (data.crisis_warning) {
+            document.getElementById("crisisModal").style.display = "flex";
+        }
+
+        fetchTrends(); 
+        document.getElementById("journal").value = ""; 
+    } catch (err) {
+        console.error("Error:", err);
+        alert("Connection Error. Check if your backend terminal is open!");
+    } finally {
+        submitBtn.innerText = "Save & Analyze";
+        submitBtn.disabled = false;
+    }
 }
 
-// Fetch mood trends
+// Fetch and display history
 async function fetchTrends() {
-    const response = await fetch(`${API_URL}/trends`);
-    const data = await response.json();
-    const trendsDiv = document.getElementById("trends");
-    trendsDiv.innerHTML = "<h3>Mood Trends</h3>";
+    try {
+        const response = await fetch(`${API_URL}/trends`);
+        const data = await response.json();
+        const trendsDiv = document.getElementById("trends");
+        trendsDiv.innerHTML = "";
 
-    data.moods.forEach(entry => {
-        const p = document.createElement("p");
-        p.innerText = `${entry.date}: Mood ${entry.mood}`;
-        trendsDiv.appendChild(p);
-    });
+        // Show last 5 entries
+        data.trends.reverse().slice(0, 5).forEach(entry => {
+            const item = document.createElement("div");
+            item.className = "trend-item";
+            item.innerHTML = `
+                <span><strong>${entry.date}</strong></span>
+                <span>Mood: ${entry.mood} | Stress: ${entry.stress}</span>
+            `;
+            trendsDiv.appendChild(item);
+        });
+    } catch (err) {
+        console.log("Trends currently unavailable.");
+    }
 }
 
-// Event listener for button
+function closeModal() {
+    document.getElementById("crisisModal").style.display = "none";
+}
+
 document.getElementById("submitBtn").addEventListener("click", submitEntry);
-
-// Load trends on page load
 window.onload = fetchTrends;
-

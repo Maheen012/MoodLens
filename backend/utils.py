@@ -23,17 +23,21 @@ def save_entry(entry):
         json.dump(entries, f, indent=4)
 
 # Send user's journal entry to gemini and return a response
-def call_gemini(journal_text):
+def call_gemini(mood, stress, journal_text):
     # the prompt
     prompt = (
-        "Reflect empathetically on this journal entry. " "Do not diagnose. Suggest gentle coping strategies:\n"
-        f"{journal_text}"
+        f"The user logged a mood of {mood}/10 and a stress level of {stress}/10.\n"
+        f"Journal Entry: {journal_text}\n\n"
+        "Please provide:\n"
+        "1. A brief, encouraging and empathetic reflection.\n"
+        "2. Gentle mental health exercises (e.g., box breathing, grounding) or a stress-relief tip.\n"
+        "Keep the tone warm and supportive. Do not provide a medical diagnosis."
     )
     
     # Call gemini
     try:
         response = client.models.generate_content(
-            model="gemini-3-flash-preview",
+            model="gemini-2.5-flash-lite",
             contents=prompt
         )
         return response.text
@@ -43,10 +47,11 @@ def call_gemini(journal_text):
 
 
 # create dict of entries then save and return the entry
-def create_entry(mood, journal_text):
-    ai_reflection = call_gemini(journal_text)
+def create_entry(mood, stress, journal_text):
+    ai_reflection = call_gemini(mood, stress, journal_text)
     entry = {
         "mood": mood,
+        "stress": stress,
         "journal": journal_text,
         "ai_reflection": ai_reflection,
         "date": str(date.today())
@@ -54,3 +59,15 @@ def create_entry(mood, journal_text):
     save_entry(entry)
     return entry
 
+# New logic to check for consistent low mood/high stress
+def check_crisis_status():
+    entries = load_entries()
+    if len(entries) < 7:
+        return False
+    
+    # Analyze the last 7 entries
+    recent = entries[-7:]
+    # Crisis if mood is consistently <= 4 OR stress is consistently >= 8
+    critical_count = sum(1 for e in recent if e['mood'] <= 3 or e['stress'] >= 8)
+    
+    return critical_count >= 5  # Returns true if 5 out of last 7 are bad

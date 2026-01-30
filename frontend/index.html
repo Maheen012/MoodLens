@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoodLens Test UI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>MoodLens Test UI</h1>
+
+        <label for="mood">Mood (1-10):</label>
+        <input type="number" id="mood" min="1" max="10" value="5"><br><br>
+
+        <label for="journal">Journal Entry:</label><br>
+        <textarea id="journal" rows="5" placeholder="Write your thoughts here..."></textarea><br><br>
+
+        <button id="submitBtn">Submit</button>
+
+        <h2>AI Reflection:</h2>
+        <div id="aiReflection" class="reflection"></div>
+
+        <div id="trends" class="trends"></div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>

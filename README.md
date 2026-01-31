@@ -127,14 +127,37 @@ Once dependencies are installed, use the automation scripts to start both server
 1.  Open your terminal in the root directory.
     
 2.  Make the script executable by running:
-        ```bash
-        chmod +x run_app.sh
-        ```
+```bash
+chmod +x run_moodlens.sh
+```
     
 3.  Launch the script:
-        ```bash
-        ./run_moodlens.sh
-        ```
+```bash
+./run_moodlens.sh
+```
+
+---
+
+## User Interface Screenshots
+
+Here’s a quick look at the MoodLens AI interface:
+
+### **Main Page**
+![Main Page](./assets/MainPage.png)
+
+### **Check-In Page**
+![Check-In](./assets/Checkln.png)
+
+### **History Page**
+![History](./assets/History.png)
+
+### **Support Page**
+![Support](./assets/Support.png)
+
+### **Warning Popup**
+![Warning Popup](./assets/WarningPopup.png)
+
+---
 
 ## References & Resources
 

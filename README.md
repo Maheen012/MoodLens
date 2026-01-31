@@ -37,7 +37,7 @@ MoodLens is designed as a **self-reflection companion**, not a clinical product.
 - No user accounts required  
 
 ### ⚠️ Clinical Disclaimer
-MoodLens is a digital self-reflection space. It is not a therapy tool and is not intended to provide medical diagnosis, clinical advice, or treatment plans. Always consult a healthcare professional for medical concerns.
+MoodLens is a digital self-reflection space. It is not a therapy tool and is not intended to provide medical diagnosis, clinical advice or treatment plans. Always consult a healthcare professional for medical concerns.
 
 ---
 
@@ -104,7 +104,7 @@ pip install -r requirements.txt
 
 ### **Frontend**
 
-Open your terminal run:
+Open your terminal and run:
 
 ```bash
 cd frontend
@@ -140,13 +140,13 @@ chmod +x run_moodlens.sh
 
 ## User Interface Screenshots
 
-Here’s a quick look at the MoodLens AI interface:
+Here’s a quick look at the MoodLens interface:
 
 ### **Main Page**
 ![Main Page](./assets/MainPage.png)
 
 ### **Check-In Page**
-![Check-In](./assets/Checkln.png)
+![Check-In](./assets/CheckIn.png)
 
 ### **History Page**
 ![History](./assets/History.png)

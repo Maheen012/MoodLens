@@ -1,7 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware 
 from pydantic import BaseModel
-from .utils import create_entry, load_entries, check_crisis_status
+from .utils import create_entry, load_entries, check_crisis_status, analyze_patterns
+import json
+import os
 
 app = FastAPI()
 
@@ -34,5 +36,19 @@ def submit_entry(entry: JournalEntry):
 @app.get("/trends")
 def get_trends():
     entries = load_entries()
-    data = [{"date": e["date"], "mood": e["mood"], "stress": e.get("stress", 5)} for e in entries]
-    return {"trends": data}
+    return {"trends": entries}
+
+@app.get("/analyze")
+def get_analysis():
+    insight = analyze_patterns()
+    return {"insight": insight}
+
+@app.delete("/clear")
+def clear_history():
+    # Clear entries
+    with open("backend/entries.json", "w") as f:
+        json.dump([], f)
+    # Remove cached analysis if exists
+    if os.path.exists("backend/analysis.json"):
+        os.remove("backend/analysis.json")
+    return {"message": "History cleared successfully"}

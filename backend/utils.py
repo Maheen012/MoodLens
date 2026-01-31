@@ -2,10 +2,12 @@ import json
 import os
 from dotenv import load_dotenv
 from google import genai
+from datetime import datetime
 from datetime import date
 
 load_dotenv()
 JSON_FILE = "backend/entries.json"
+ANALYSIS_CACHE_FILE = "backend/analysis.json"
 client = genai.Client()
 
 # Load entries from JSON
@@ -50,17 +52,19 @@ def call_gemini(mood, stress, journal_text):
 # create dict of entries then save and return the entry
 def create_entry(mood, stress, journal_text):
     ai_reflection = call_gemini(mood, stress, journal_text)
+    now = datetime.now()
     entry = {
         "mood": mood,
         "stress": stress,
         "journal": journal_text,
         "ai_reflection": ai_reflection,
-        "date": str(date.today())
+        "date": now.strftime("%Y-%m-%d"),
+        "time": now.strftime("%I:%M %p")
     }
     save_entry(entry)
     return entry
 
-# New logic to check for consistent low mood/high stress
+# to check for consistent low mood/high stress
 def check_crisis_status():
     entries = load_entries()
     if len(entries) < 7:
@@ -72,3 +76,32 @@ def check_crisis_status():
     critical_count = sum(1 for e in recent if e['mood'] <= 3 or e['stress'] >= 7)
     
     return critical_count >= 5  # Returns true if 5 out of last 7 are bad
+
+def analyze_patterns():
+    entries = load_entries()
+    if len(entries) < 3:
+        return "I'll be able to spot patterns once you've logged a few more entries!"
+
+    # Take the last 10 entries
+    recent_history = entries[-10:]
+    
+    # Format history for the AI
+    history_str = "\n".join([
+        f"Date: {e['date']}, Mood: {e['mood']}, Stress: {e['stress']}, Journal: {e['journal']}"
+        for e in recent_history
+    ])
+
+    prompt = f"""
+        Analyze these mood logs and give one specific, helpful pattern observation 
+        and one actionable tip. Keep it under 30 words.
+        Logs: {history_str}
+    """
+    
+    try:
+        response = client.models.generate_content(
+            model="gemini-2.5-flash", 
+            contents=prompt
+        )
+        return response.text
+    except Exception as e:
+        return "Patterns are emerging, but I need a moment to process them."

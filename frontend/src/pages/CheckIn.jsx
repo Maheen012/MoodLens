@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 import { useNavigate } from 'react-router-dom'; 
-import { Sparkles, MessageSquare, StickyNote, AlertTriangle, HeartHandshake } from 'lucide-react';
+import { Sparkles, MessageSquare, StickyNote, AlertTriangle, HeartHandshake, Mic, MicOff, Volume2 } from 'lucide-react';
 
 export default function CheckIn() {
   const [mood, setMood] = useState(5);
@@ -12,7 +12,12 @@ export default function CheckIn() {
   const [showWarning, setShowWarning] = useState(false); 
   
   const textAreaRef = useRef(null);
+  const recognitionRef = useRef(null); //control microphone
+  const audioRef = useRef(null); //control speaker
   const navigate = useNavigate();
+
+  const [isListening, setIsListening] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
 
   useEffect(() => {
     if (textAreaRef.current) {
@@ -20,6 +25,57 @@ export default function CheckIn() {
       textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
     }
   }, [journal]);
+
+  // STT feature
+  const toggleListening = () => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) return alert("Browser does not support Speech Recognition.");
+
+    if (!isListening) {
+      const recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognitionRef.current = recognition;
+
+      recognition.onstart = () => setIsListening(true);
+      
+      recognition.onresult = (event) => {
+        const transcript = Array.from(event.results)
+          .map(result => result[0].transcript)
+          .join('');
+        setJournal(transcript);
+      };
+
+      recognition.onend = () => setIsListening(false);
+      recognition.start();
+    } else {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+      setIsListening(false);
+    }
+  };
+
+  // TTS feature
+  const playReflection = (text) => {
+    if (!text) return;
+
+    if (isSpeaking && audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      setIsSpeaking(false);
+      return;
+    }
+
+    const cleanText = text.replace(/[*#_]/g, '').trim();
+    setIsSpeaking(true);
+    
+    const audio = new Audio(`http://127.0.0.1:8000/speak?text=${encodeURIComponent(cleanText)}`);
+    audioRef.current = audio;
+    
+    audio.play().catch(() => setIsSpeaking(false));
+    audio.onended = () => setIsSpeaking(false);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -45,8 +101,6 @@ export default function CheckIn() {
         
         {/* left panel */}
         <div className="space-y-6 lg:sticky lg:top-32">
-          
-          {/* check in form */}
           <div className="bg-white/5 border border-white/10 p-8 rounded-[2rem] shadow-sm backdrop-blur-md">
             <div className="flex items-center gap-3 mb-6">
               <div className="bg-[#C3110C] p-2 rounded-lg text-white">
@@ -71,17 +125,32 @@ export default function CheckIn() {
                 <input type="range" min="1" max="10" value={stress} onChange={(e) => setStress(e.target.value)} 
                   className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-[#C3110C]" />
               </div>
-              <div className="space-y-1"> {/* Minimal parent space */}
+
+              <div className="space-y-1"> 
                 <label className="block mb-4 font-bold text-white/50 uppercase text-[9px] tracking-[0.2em]">
                   Journal Entry
                 </label>
-                <textarea 
-                  ref={textAreaRef}
-                  value={journal} 
-                  onChange={(e) => setJournal(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:bg-white/10 focus:ring-4 focus:ring-[#C3110C]/20 outline-none transition-all placeholder-white/20 text-sm min-h-[100px] leading-relaxed"
-                  placeholder="What's on your mind?" 
-                />
+                <div className="relative group">
+                  <textarea 
+                    ref={textAreaRef}
+                    value={journal} 
+                    onChange={(e) => setJournal(e.target.value)}
+                    className="w-full bg-white/5 border border-white/10 rounded-xl p-4 pr-12 text-white focus:bg-white/10 focus:ring-4 focus:ring-[#C3110C]/20 outline-none transition-all placeholder-white/20 text-sm min-h-[100px] leading-relaxed resize-none"
+                    placeholder="What's on your mind?" 
+                  />
+                  
+                  <button 
+                    type="button"
+                    onClick={toggleListening}
+                    className={`absolute bottom-3 right-3 p-2 rounded-lg transition-all z-20 
+                      ${isListening 
+                        ? 'bg-red-600 text-white animate-pulse shadow-lg shadow-red-600/20' 
+                        : 'text-white/20 hover:text-white hover:bg-white/10'
+                      }`}
+                  >
+                    {isListening ? <MicOff size={18} /> : <Mic size={18} />}
+                  </button>
+                </div>
               </div>
               <button type="submit" className="w-full py-3.5 bg-[#C3110C] text-white rounded-xl font-bold uppercase tracking-[0.2em] hover:bg-[#E6501B] transition-all shadow-md active:scale-[0.98] text-xs">
                 {status.loading ? 'Reflecting...' : 'Log Entry'}
@@ -92,12 +161,41 @@ export default function CheckIn() {
 
         {/* right panel */}
         <div className="bg-white/5 backdrop-blur-md p-8 md:p-12 rounded-[2.5rem] text-[#F5F2F0] shadow-2xl relative min-h-[85vh] flex flex-col justify-start overflow-hidden w-full border border-white/10">
-          <Sparkles className="absolute top-10 right-10 text-[#E6501B] opacity-10" size={120} />
+          <Sparkles className={`absolute top-10 right-10 text-[#E6501B] transition-opacity duration-700 ${isSpeaking ? 'opacity-40 animate-pulse scale-110' : 'opacity-10 scale-100'}`} size={120} />
           
           <div className="relative z-10 w-full"> 
-            <div className="flex items-center gap-3 mb-10 text-[#E6501B] font-black uppercase text-[10px] tracking-[0.4em]">
-              <MessageSquare size={16} /> 
-              <span>MoodLens AI Reflection</span>
+            <div className="flex items-center justify-between mb-10">
+              <div className="flex items-center gap-3 text-[#E6501B] font-black uppercase text-[10px] tracking-[0.4em]">
+                <MessageSquare size={16} /> 
+                <span>MoodLens AI Reflection</span>
+              </div>
+              
+              {status.message && !status.loading && (
+                <button 
+                  onClick={() => playReflection(status.message)}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-all duration-300 text-[10px] font-black uppercase tracking-widest
+                    ${isSpeaking 
+                      ? 'bg-[#E6501B] border-[#E6501B] text-white shadow-lg shadow-[#E6501B]/40' 
+                      : 'bg-white/5 border-white/10 text-white/60 hover:border-[#E6501B] hover:text-[#E6501B]'
+                    }`}
+                >
+                  {isSpeaking ? (
+                    <>
+                      <div className="flex gap-0.5">
+                        <span className="w-1 h-3 bg-white animate-bounce [animation-delay:-0.3s]"></span>
+                        <span className="w-1 h-3 bg-white animate-bounce [animation-delay:-0.15s]"></span>
+                        <span className="w-1 h-3 bg-white animate-bounce"></span>
+                      </div>
+                      <span>Stop AI</span>
+                    </>
+                  ) : (
+                    <>
+                      <Volume2 size={14} />
+                      <span>Listen</span>
+                    </>
+                  )}
+                </button>
+              )}
             </div>
 
             {status.loading ? (
@@ -130,7 +228,6 @@ export default function CheckIn() {
             )}
           </div>
         </div>
-
       </div>
 
       {/* warning modal */}

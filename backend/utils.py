@@ -4,11 +4,33 @@ from dotenv import load_dotenv
 from google import genai
 from datetime import datetime
 from datetime import date
+import boto3
 
 load_dotenv()
 JSON_FILE = "backend/entries.json"
 ANALYSIS_CACHE_FILE = "backend/analysis.json"
 client = genai.Client()
+
+# Initialize Polly Client
+polly = boto3.client(
+    'polly',
+    aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
+    aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
+    region_name=os.getenv('AWS_REGION', 'us-east-1')
+)
+
+def generate_speech_stream(text: str):
+    try:
+        response = polly.synthesize_speech(
+            Text=text,
+            OutputFormat='mp3',
+            VoiceId='Joanna', 
+            Engine='neural'  
+        )
+        return response['AudioStream'].read()
+    except Exception as e:
+        print(f"Polly Error: {e}")
+        return None
 
 # Load entries from JSON
 def load_entries():
@@ -108,3 +130,23 @@ def analyze_patterns():
         return response.text
     except Exception as e:
         return "Patterns are emerging, but I need a moment to process them."
+    
+""" test for checking connection
+def test_polly_connection():
+    try:
+        polly = boto3.client(
+            'polly',
+            aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
+            aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
+            region_name=os.getenv('AWS_REGION', 'us-east-1')
+        )
+        response = polly.describe_voices(LanguageCode='en-US')
+        print(SUCCESS: Connection established!")
+        
+    except Exception as e:
+        print("FAILED: Could not access AWS.")
+        print(f"Error: {str(e)}")
+
+if __name__ == "__main__":
+    test_polly_connection()
+"""

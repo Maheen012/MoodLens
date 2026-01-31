@@ -1,9 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware 
 from pydantic import BaseModel
-from .utils import create_entry, load_entries, check_crisis_status, analyze_patterns
+from backend.utils import create_entry, load_entries, check_crisis_status, analyze_patterns, generate_speech_stream
 import json
 import os
+import io
+from fastapi.responses import StreamingResponse
 
 app = FastAPI()
 
@@ -52,3 +54,15 @@ def clear_history():
     if os.path.exists("backend/analysis.json"):
         os.remove("backend/analysis.json")
     return {"message": "History cleared successfully"}
+
+@app.get("/speak")
+async def speak(text: str):
+    from backend.utils import generate_speech_stream
+    import io
+    from fastapi.responses import StreamingResponse
+
+    audio_data = generate_speech_stream(text)
+    if audio_data:
+        return StreamingResponse(io.BytesIO(audio_data), media_type="audio/mpeg")
+    
+    return {"error": "Voice synthesis failed"}, 500

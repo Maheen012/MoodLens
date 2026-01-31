@@ -28,15 +28,18 @@ def save_entry(entry):
 def call_gemini(mood, stress, journal_text):
     # the prompt
     prompt = (
-            f"Context: The user logged a mood of {mood}/10 and stress of {stress}/10.\n"
-            f"Journal: \"{journal_text}\"\n\n"
-            "Instructions:\n"
-            "1. Act as a supportive, empathetic peer. Validate their specific feelings mentioned in the journal.\n"
-            "2. Analyze the journal content to suggest ONE specific cognitive tool or grounding exercise (e.g., box breathing, 5-4-3-2-1, cognitive reframing, or a short walk) that directly addresses the situation they described.\n"
-            "3. Do not use medical jargon or provide a diagnosis.\n"
-            "4. If the entry sounds like a severe crisis, prioritize warmth and a suggestion to reach out for support."
-        )
-    
+        f"Context: The user logged a mood of {mood}/10 and stress of {stress}/10.\n"
+        f"Journal: \"{journal_text}\"\n\n"
+        "Instructions:\n"
+        "1. Role: Supportive, empathetic peer. Validate the user's feelings specifically based on their text.\n"
+        "2. Logic: If the entry expresses stress, sadness, anxiety, or overwhelm, suggest 2-3 concrete grounding "
+        "exercises (e.g., Box Breathing, 5-4-3-2-1 technique, or Thought Challenging). Briefly explain how to do them.\n"
+        "3. Style: Use warm, human language. Avoid clinical jargon, 'AI-speak,' or diagnosing the user.\n"
+        "4. Safety First: If the content indicates a severe crisis or self-harm, prioritize a gentle "
+        "encouragement to use the resources on the Support page as the very first part of your response.\n"
+        "5. Format: Use Markdown (bolding and bullet points) to make suggestions easy to read under stress."
+    )
+        
     # Call gemini
     try:
         response = client.models.generate_content(
@@ -73,7 +76,7 @@ def check_crisis_status():
     # Analyze the last 7 entries
     recent = entries[-7:]
     # Crisis if mood is consistently <= 4 OR stress is consistently >= 7
-    critical_count = sum(1 for e in recent if e['mood'] <= 3 or e['stress'] >= 7)
+    critical_count = sum(1 for e in recent if e['mood'] <= 4 or e['stress'] >= 7)
     
     return critical_count >= 5  # Returns true if 5 out of last 7 are bad
 

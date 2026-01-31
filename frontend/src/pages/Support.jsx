@@ -32,23 +32,26 @@ export default function Support() {
   return (
     <div className="max-w-5xl mx-auto space-y-12 animate-in fade-in duration-700">
       
-      {/* emergency */}
-      <div className="bg-[#492828] border border-red-900/20 p-10 rounded-[2.5rem] flex flex-col md:flex-row items-center gap-8 shadow-2xl relative overflow-hidden">
-        <div className="absolute top-0 right-0 p-4 opacity-5">
-          <ShieldAlert size={120} />
-        </div>
-        <div className="bg-red-500/10 p-5 rounded-full text-red-400 shrink-0">
-          <ShieldAlert size={40} />
-        </div>
-        <div className="relative z-10 text-center md:text-left">
-          <h2 className="text-2xl font-black text-white tracking-tight uppercase mb-2">Immediate Crisis? Call 911</h2>
-          <p className="text-stone-400 text-sm leading-relaxed max-w-2xl">
-            If you or someone else is in immediate danger, please do not wait. Contact emergency services or go to the nearest hospital emergency department immediately.
-          </p>
+      <div className="bg-[#C3110C]/10 border-2 border-[#C3110C] p-10 rounded-[3rem] shadow-[0_0_40px_rgba(195,17,12,0.15)] relative overflow-hidden group">
+        <div className="absolute inset-0 bg-gradient-to-r from-[#C3110C]/10 to-transparent pointer-events-none" />
+        
+        <div className="flex flex-col md:flex-row items-center gap-8 relative z-10">
+          <div className="bg-[#C3110C] p-5 rounded-3xl text-white shadow-lg shrink-0 animate-pulse">
+            <ShieldAlert size={36} strokeWidth={2.5} />
+          </div>
+          
+          <div className="relative z-10 text-center md:text-left space-y-2">
+            <h2 className="text-3xl font-black text-white tracking-tighter uppercase">
+              Immediate Crisis? <span className="text-[#C3110C]">Call 911</span>
+            </h2>
+            <p className="text-white/70 text-sm leading-relaxed max-w-2xl font-medium">
+              If you or someone else is in immediate danger, please do not wait. Contact emergency services or go to the nearest hospital emergency department immediately.
+            </p>
+          </div>
         </div>
       </div>
 
-      {/* Resources */}
+      {/* Resources Grid */}
       <div className="grid md:grid-cols-2 gap-6">
         {resources.map((r, i) => (
           <a 
@@ -56,20 +59,20 @@ export default function Support() {
             href={r.link} 
             target="_blank" 
             rel="noopener noreferrer"
-            className="group bg-white/60 backdrop-blur-md border border-[#492828]/5 p-8 rounded-[2rem] hover:bg-white transition-all shadow-sm hover:shadow-xl flex flex-col justify-between"
+            className="group bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-[2.5rem] hover:bg-white/10 transition-all flex flex-col justify-between"
           >
             <div>
               <div className="flex justify-between items-start mb-6">
-                <div className="bg-[#84934A]/10 p-3 rounded-2xl text-[#84934A] group-hover:bg-[#84934A] group-hover:text-white transition-all">
+                <div className="bg-[#C3110C]/10 p-3 rounded-2xl text-[#C3110C] group-hover:bg-[#C3110C] group-hover:text-white transition-all">
                   <LifeBuoy size={24} />
                 </div>
-                <ExternalLink size={16} className="text-[#492828]/20 group-hover:text-[#492828] transition-colors" />
+                <ExternalLink size={16} className="text-white/20 group-hover:text-white transition-colors" />
               </div>
-              <h3 className="text-lg font-black uppercase tracking-tight text-[#492828] mb-1">{r.name}</h3>
-              <p className="text-[#84934A] font-black text-[10px] uppercase tracking-[0.2em] mb-4">{r.contact}</p>
-              <p className="text-[#492828]/50 text-sm leading-relaxed font-medium mb-4">{r.desc}</p>
+              <h3 className="text-lg font-black uppercase tracking-tight text-white mb-1">{r.name}</h3>
+              <p className="text-[#C3110C] font-black text-[10px] uppercase tracking-[0.2em] mb-4">{r.contact}</p>
+              <p className="text-white/40 text-sm leading-relaxed font-medium mb-4">{r.desc}</p>
             </div>
-            <div className="pt-4 border-t border-[#492828]/5 flex items-center gap-2 text-[10px] font-bold uppercase text-[#492828]/30 tracking-widest">
+            <div className="pt-4 border-t border-white/5 flex items-center gap-2 text-[10px] font-bold uppercase text-white/30 tracking-widest">
               <Globe size={12} />
               Official Government Resource
             </div>
@@ -79,11 +82,11 @@ export default function Support() {
 
       <div className="text-center pt-10">
         <div className="inline-flex flex-col items-center">
-          <Heart className="text-[#84934A] mb-4 animate-pulse" fill="currentColor" size={24} />
-          <h3 className="text-sm font-black uppercase tracking-[0.4em] text-[#492828]/30">
+          <Heart className="text-[#C3110C] mb-4 animate-pulse" fill="currentColor" size={24} />
+          <h3 className="text-sm font-black uppercase tracking-[0.4em] text-white/10">
             You are not alone.
           </h3>
-          <div className="w-12 h-1 bg-[#84934A]/20 rounded-full mt-4"></div>
+          <div className="w-12 h-1 bg-[#C3110C]/20 rounded-full mt-4"></div>
         </div>
       </div>
     </div>

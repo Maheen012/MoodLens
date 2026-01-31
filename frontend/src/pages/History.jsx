@@ -54,21 +54,21 @@ export default function History() {
     <div className="max-w-5xl mx-auto space-y-8 pb-20 px-4">
       
       {/* AI insight */}
-      <div className="bg-[#84934A]/10 border border-[#84934A]/20 p-8 rounded-[2.5rem] relative overflow-hidden">
-        <div className="absolute top-[-10px] right-[-10px] opacity-10 text-[#84934A]">
+      <div className="bg-[#C3110C]/10 border border-[#C3110C]/20 p-8 rounded-[2.5rem] relative overflow-hidden">
+        <div className="absolute top-[-10px] right-[-10px] opacity-10 text-[#E6501B]">
           <Sparkles size={80} />
         </div>
         
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
           <div className="flex items-start gap-4">
-            <div className="bg-[#84934A] p-3 rounded-2xl text-white shadow-lg shadow-[#84934A]/20">
+            <div className="bg-[#C3110C] p-3 rounded-2xl text-white shadow-lg shadow-[#C3110C]/20">
               <Sparkles size={24} />
             </div>
             <div>
-              <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#84934A] mb-2">
+              <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#E6501B] mb-2">
                 AI Behavioral Insight
               </h4>
-              <div className={`text-sm text-[#492828] font-semibold leading-relaxed max-w-md prose prose-sm prose-stone ${loadingInsight ? 'animate-pulse' : ''}`}>
+              <div className={`text-sm text-white/80 font-semibold leading-relaxed max-w-md prose prose-sm prose-invert ${loadingInsight ? 'animate-pulse' : ''}`}>
                 <ReactMarkdown>{insight}</ReactMarkdown>
               </div>
             </div>
@@ -77,7 +77,7 @@ export default function History() {
           <button 
             onClick={handleGenerateInsight}
             disabled={loadingInsight}
-            className="flex items-center gap-2 bg-[#84934A] hover:bg-[#6b773d] text-white px-6 py-3 rounded-2xl font-bold text-sm transition-all shadow-md active:scale-95 disabled:opacity-50"
+            className="flex items-center gap-2 bg-[#C3110C] hover:bg-[#E6501B] text-white px-6 py-3 rounded-2xl font-bold text-sm transition-all shadow-md active:scale-95 disabled:opacity-50"
           >
             {loadingInsight ? <RefreshCw size={18} className="animate-spin" /> : <TrendingUp size={18} />}
             {loadingInsight ? "Analyzing..." : "Generate Insight"}
@@ -86,18 +86,18 @@ export default function History() {
       </div>
 
       {/* chart */}
-      <div className="bg-white/70 backdrop-blur-md p-8 rounded-[3rem] border border-[#492828]/5 shadow-sm">
+      <div className="bg-white/5 backdrop-blur-md p-8 rounded-[3rem] border border-white/10 shadow-sm">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
-            <div className="bg-[#492828] p-2 rounded-xl text-white">
+            <div className="bg-[#E6501B] p-2 rounded-xl text-white">
               <TrendingUp size={20} />
             </div>
-            <h2 className="text-xl font-black text-[#492828] uppercase tracking-tight">Recent Check-ins</h2>
+            <h2 className="text-xl font-black text-white uppercase tracking-tight">Recent Check-ins</h2>
           </div>
           
           <button 
             onClick={handleClearHistory}
-            className="flex items-center gap-2 text-[10px] font-bold text-red-400 hover:text-red-600 bg-red-50 px-4 py-2 rounded-full uppercase transition-all hover:bg-red-100"
+            className="flex items-center gap-2 text-[10px] font-bold text-red-400 hover:text-red-300 bg-red-500/10 px-4 py-2 rounded-full uppercase transition-all hover:bg-red-500/20"
           >
             <Trash2 size={12} /> Clear History
           </button>
@@ -106,24 +106,26 @@ export default function History() {
         <div className="h-80 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={chartData} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#00000008" />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#ffffff08" />
               
               <XAxis 
                 dataKey="logIndex" 
                 fontSize={9} 
                 tickLine={false} 
                 axisLine={false} 
+                stroke="#ffffff40"
                 tickFormatter={(val) => `Log ${val}`}
               />
               
-              <YAxis domain={[0, 10]} fontSize={10} tickLine={false} axisLine={false} tickCount={6} />
+              <YAxis domain={[0, 10]} fontSize={10} tickLine={false} axisLine={false} tickCount={6} stroke="#ffffff40" />
               
               <Tooltip 
-                cursor={{ fill: '#49282805' }}
-                contentStyle={{ backgroundColor: '#FFF', borderRadius: '16px', border: 'none', boxShadow: '0 10px 30px rgba(0,0,0,0.1)', fontSize: '12px' }}
+                cursor={{ fill: '#ffffff05' }}
+                contentStyle={{ backgroundColor: '#280905', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 10px 30px rgba(0,0,0,0.5)', fontSize: '12px', color: '#fff' }}
+                itemStyle={{ color: '#fff' }}
                 labelFormatter={(value) => {
                   const entry = chartData.find(d => d.logIndex === value);
-                  return entry ? `Entry ${value}: ${entry.date} ${entry.time || ''}` : `Entry ${value}`;
+                  return entry ? `Entry ${value}: ${entry.date}` : `Entry ${value}`;
                 }}
               />
               
@@ -134,8 +136,8 @@ export default function History() {
                 wrapperStyle={{ paddingBottom: '20px', fontSize: '10px', fontWeight: 'bold', textTransform: 'uppercase' }} 
               />
               
-              <Bar name="Mood" dataKey="mood" fill="#84934A" radius={[6, 6, 0, 0]} barSize={18} />
-              <Bar name="Stress" dataKey="stress" fill="#492828" radius={[6, 6, 0, 0]} barSize={18} />
+              <Bar name="Mood" dataKey="mood" fill="#E6501B" radius={[6, 6, 0, 0]} barSize={18} />
+              <Bar name="Stress" dataKey="stress" fill="#C3110C" radius={[6, 6, 0, 0]} barSize={18} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -144,32 +146,32 @@ export default function History() {
       {/* History List */}
       <div className="space-y-4">
         <div className="flex items-center gap-3 px-2">
-          <HistoryIcon size={18} className="text-[#492828]/40" />
-          <h3 className="text-xs font-black uppercase tracking-widest text-[#492828]/40">Log History</h3>
+          <HistoryIcon size={18} className="text-white/20" />
+          <h3 className="text-xs font-black uppercase tracking-widest text-white/20">Log History</h3>
         </div>
 
         <div className="grid gap-3">
           {[...allTrends].reverse().map((entry, idx) => (
-            <div key={`full-${idx}`} className="bg-white/60 p-6 rounded-[2.5rem] border border-[#492828]/5 flex justify-between items-center transition-all hover:bg-white shadow-sm hover:shadow-md">
+            <div key={`full-${idx}`} className="bg-white/5 p-6 rounded-[2.5rem] border border-white/10 flex justify-between items-center transition-all hover:bg-white/10 shadow-sm">
               <div className="space-y-2">
                 <div className="flex items-center gap-3">
-                  <span className="text-[10px] font-black text-[#84934A] uppercase">{entry.date}</span>
-                  <div className="flex items-center gap-1 text-[#492828]/30">
+                  <span className="text-[10px] font-black text-[#E6501B] uppercase">{entry.date}</span>
+                  <div className="flex items-center gap-1 text-white/30">
                     <Clock size={10} />
                     <span className="text-[9px] font-bold uppercase">{entry.time || "Logged"}</span>
                   </div>
                 </div>
-                <p className="text-sm text-[#492828] font-medium leading-relaxed max-w-xl">{entry.journal}</p>
+                <p className="text-sm text-white/70 font-medium leading-relaxed max-w-xl">{entry.journal}</p>
               </div>
 
-              <div className="flex gap-6 items-center pl-8 border-l border-[#492828]/5">
+              <div className="flex gap-6 items-center pl-8 border-l border-white/10">
                 <div className="text-center">
-                  <span className="text-[8px] font-black uppercase text-[#492828]/30">Mood</span>
-                  <p className="text-lg font-black text-[#84934A] leading-none mt-1">{entry.mood}</p>
+                  <span className="text-[8px] font-black uppercase text-white/30">Mood</span>
+                  <p className="text-lg font-black text-[#E6501B] leading-none mt-1">{entry.mood}</p>
                 </div>
                 <div className="text-center">
-                  <span className="text-[8px] font-black uppercase text-[#492828]/30">Stress</span>
-                  <p className="text-lg font-black text-[#492828] leading-none mt-1">{entry.stress}</p>
+                  <span className="text-[8px] font-black uppercase text-white/30">Stress</span>
+                  <p className="text-lg font-black text-[#C3110C] leading-none mt-1">{entry.stress}</p>
                 </div>
               </div>
             </div>

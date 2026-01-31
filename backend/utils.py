@@ -26,13 +26,14 @@ def save_entry(entry):
 def call_gemini(mood, stress, journal_text):
     # the prompt
     prompt = (
-        f"The user logged a mood of {mood}/10 and a stress level of {stress}/10.\n"
-        f"Journal Entry: {journal_text}\n\n"
-        "Please provide:\n"
-        "1. A brief, encouraging and empathetic reflection.\n"
-        "2. Gentle mental health exercises (e.g., box breathing, grounding) or a stress-relief tip.\n"
-        "Keep the tone warm and supportive. Do not provide a medical diagnosis."
-    )
+            f"Context: The user logged a mood of {mood}/10 and stress of {stress}/10.\n"
+            f"Journal: \"{journal_text}\"\n\n"
+            "Instructions:\n"
+            "1. Act as a supportive, empathetic peer. Validate their specific feelings mentioned in the journal.\n"
+            "2. Analyze the journal content to suggest ONE specific cognitive tool or grounding exercise (e.g., box breathing, 5-4-3-2-1, cognitive reframing, or a short walk) that directly addresses the situation they described.\n"
+            "3. Do not use medical jargon or provide a diagnosis.\n"
+            "4. If the entry sounds like a severe crisis, prioritize warmth and a suggestion to reach out for support."
+        )
     
     # Call gemini
     try:
@@ -67,7 +68,7 @@ def check_crisis_status():
     
     # Analyze the last 7 entries
     recent = entries[-7:]
-    # Crisis if mood is consistently <= 4 OR stress is consistently >= 8
-    critical_count = sum(1 for e in recent if e['mood'] <= 3 or e['stress'] >= 8)
+    # Crisis if mood is consistently <= 4 OR stress is consistently >= 7
+    critical_count = sum(1 for e in recent if e['mood'] <= 3 or e['stress'] >= 7)
     
     return critical_count >= 5  # Returns true if 5 out of last 7 are bad

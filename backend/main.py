@@ -22,13 +22,12 @@ class JournalEntry(BaseModel):
 @app.post("/submit")
 def submit_entry(entry: JournalEntry):
     full_entry = create_entry(entry.mood, entry.stress, entry.journal)
-    # Check if we should show resources
-    show_resources = check_crisis_status()
+    
+    show_resources = check_crisis_status() 
+    
     return {
-        "message": "Entry saved", 
         "ai_reflection": full_entry["ai_reflection"],
-        "crisis_warning": show_resources,
-        "resource_link": "https://www.canada.ca/en/public-health/services/mental-health-services/mental-health-get-help.html" 
+        "crisis_warning": show_resources
     }
 
 # GET endpoint to fetch mood trends

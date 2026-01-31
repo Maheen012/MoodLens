@@ -1,15 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
-import { Sparkles, MessageSquare, StickyNote, Lightbulb, Quote } from 'lucide-react';
+import { useNavigate } from 'react-router-dom'; 
+import { Sparkles, MessageSquare, StickyNote, AlertTriangle, HeartHandshake } from 'lucide-react';
 
 export default function CheckIn() {
   const [mood, setMood] = useState(5);
   const [stress, setStress] = useState(5);
   const [journal, setJournal] = useState('');
   const [status, setStatus] = useState({ loading: false, message: '', type: '' });
+  const [showWarning, setShowWarning] = useState(false); 
   
   const textAreaRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (textAreaRef.current) {
@@ -28,6 +31,9 @@ export default function CheckIn() {
         journal 
       });
       setStatus({ loading: false, message: res.data.ai_reflection, type: 'success' });
+      if (res.data.crisis_warning === true) {
+        setShowWarning(true);
+      }
     } catch (err) {
       setStatus({ loading: false, message: 'AI Unavailable, check if server is running.', type: 'error' });
     }
@@ -128,6 +134,33 @@ export default function CheckIn() {
         </div>
 
       </div>
+      {/* warning*/}
+      {showWarning && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#492828]/70 backdrop-blur-md p-4 animate-in fade-in">
+          <div className="bg-white rounded-[3rem] p-10 max-w-md w-full shadow-2xl text-center space-y-6 animate-in zoom-in">
+            <div className="bg-red-50 w-20 h-20 rounded-full flex items-center justify-center mx-auto text-red-500">
+              <AlertTriangle size={40} />
+            </div>
+            <div className="space-y-2">
+              <h2 className="text-2xl font-black text-[#492828] uppercase">Checking in</h2>
+              <p className="text-sm text-[#492828]/60 leading-relaxed font-medium">
+                We've noticed you've been feeling low for a while. You're not alone. Would you like to view our support resources?
+              </p>
+            </div>
+            <div className="flex flex-col gap-3">
+              <button 
+                onClick={() => navigate('/support')}
+                className="bg-[#492828] text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-2"
+              >
+                <HeartHandshake size={20} /> Get Support
+              </button>
+              <button onClick={() => setShowWarning(false)} className="text-[10px] font-black uppercase text-[#492828]/30 pt-2">
+                Continue for now
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -15,7 +15,7 @@ function NavLink({ to, children }) {
 export default function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-[#ECECEC] text-[#492828] selection:bg-[#84934A]/20">
+      <div className="min-h-screen bg-[#F5F2F0] text-[#492828] selection:bg-[#84934A]/20">
         <nav className="fixed top-0 w-full z-50 border-b border-[#492828]/10 bg-[#ECECEC]/80 backdrop-blur-md">
           <div className="max-w-[1600px] mx-auto px-6 h-16 flex items-center justify-between">
             <Link to="/" className="text-xl font-black tracking-tighter uppercase text-[#492828]">

@@ -83,7 +83,7 @@ Ensure you have the following installed:
 Before running the scripts, you must configure your API keys. Navigate to the `backend/` folder and create a `.env` file:
 
 ```env
-GOOGLE_API_KEY=your_gemini_key
+GEMINI_API_KEY=your_gemini_key
 AWS_ACCESS_KEY_ID=your_aws_key
 AWS_SECRET_ACCESS_KEY=your_aws_secret
 ```

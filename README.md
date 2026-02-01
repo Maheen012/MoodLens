@@ -71,19 +71,18 @@ This project includes automation scripts to handle dependency installation and s
 ## Prerequisites
 Ensure you have the following installed:
 
-- **Node.js** (v18+) & **npm**  
-- **Python** (3.10+)  
+- **Node.js** (v24) & **npm**  
+- **Python** (3.14)  
 - **Git**  
 
 ---
+## 1. Clone the Repository
 
-## 1. Environment Variables
-Before running the scripts, you must configure your API keys. Navigate to the `backend/` folder and create a `.env` file:
+Start by cloning the MoodLens repository in your terminal and navigating into the project directory:
 
-```env
-GEMINI_API_KEY=your_gemini_key
-AWS_ACCESS_KEY_ID=your_aws_key
-AWS_SECRET_ACCESS_KEY=your_aws_secret
+```bash
+git clone https://github.com/Maheen012/MoodLens.git
+cd MoodLens
 ```
 
 ## 2. Install Dependencies
@@ -108,7 +107,16 @@ cd frontend
 npm install
 ```
 
-## 3. Launch the Application
+## 3. Environment Variables
+Before running the scripts, you must configure your API keys. Navigate to the `backend/` folder and create a `.env` file:
+
+```env
+GEMINI_API_KEY=your_gemini_key
+AWS_ACCESS_KEY_ID=your_aws_key
+AWS_SECRET_ACCESS_KEY=your_aws_secret
+```
+
+## 4. Launch the Application
 
 Once dependencies are installed, use the automation scripts to start both servers at once.
 
@@ -122,12 +130,11 @@ Once dependencies are installed, use the automation scripts to start both server
 ### **macOS / Linux Users**
 
 1.  Open your terminal in the root directory.
-    
+
 2.  Make the script executable by running:
 ```bash
 chmod +x run_moodlens.sh
 ```
-    
 3.  Launch the script:
 ```bash
 ./run_moodlens.sh

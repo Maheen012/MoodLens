@@ -1,4 +1,4 @@
-# MoodLens - AI-Powered Mental Health Tracker
+# MoodLens - AI-Powered Mental Wellness Tracker
 
 MoodLens is an AI-powered mental health tracking tool focused on mood, stress and reflective journaling, using AI-driven insights to identify emotional patterns and provide personalized suggestions and coping exercises.
 
@@ -25,7 +25,7 @@ MoodLens is designed as a **self-reflection companion**, not a clinical product.
 ### 🚨 Crisis Awareness
 - Detects high-risk emotional language  
 - Displays a supportive resources modal when concerning patterns appear  
-- Includes links to certified mental-health helplines across the **US and Canada**  
+- Includes links to certified mental-health helplines across the **US and Canada**
 
 ### 🎨 Clean, Modern UI
 - Dark-mode focused, calming interface  

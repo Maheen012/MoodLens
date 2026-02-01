@@ -14,7 +14,7 @@ MoodLens is designed as a **self-reflection companion**, not a clinical product.
 - Pattern recognition across mood, stress, and journal entries  
 
 ### 🎙️ Voice Capabilities – Improves Accessibility
-- **Speech-to-Text (STT):** Dictate journal entries instead of typing 
+- **Speech-to-Text (STT):** Dictate journal entries instead of typing using **Web Speech API**
 - **Text-to-Speech (TTS):** Listen to reflections read aloud using **AWS Polly**  
 
 ### 📊 Mood & Stress Tracking
@@ -45,9 +45,7 @@ MoodLens is a digital self-reflection space. It is not a therapy tool and is not
 
 **Frontend**
 - React.js  
-- Tailwind CSS  
-- Lucide-React (Icons)  
-- Axios  
+- Tailwind CSS   
 
 **Backend**
 - Python (FastAPI)  

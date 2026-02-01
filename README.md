@@ -8,13 +8,13 @@ MoodLens is designed as a **self-reflection companion**, not a clinical product.
 
 ## Features
 
-### 🧠 Intelligent Reflections
+### 🧠 Thoughtful Reflections
 - AI-generated empathetic insights based on journal entries using **Google Gemini**  
 - Supportive tone focused on reflection and coping exercises  
 - Pattern recognition across mood, stress, and journal entries  
 
 ### 🎙️ Voice Capabilities – Improves Accessibility
-- **Speech-to-Text (STT):** Dictate journal entries instead of typing using **Web Speech API**  
+- **Speech-to-Text (STT):** Dictate journal entries instead of typing 
 - **Text-to-Speech (TTS):** Listen to reflections read aloud using **AWS Polly**  
 
 ### 📊 Mood & Stress Tracking
@@ -66,7 +66,7 @@ MoodLens is a digital self-reflection space. It is not a therapy tool and is not
 
 ## Installation & Setup
 
-This project includes automation scripts to handle dependency installation and server management across Windows, macOS, and Linux.
+This project includes automation scripts to handle dependency installation and server management across Windows, macOS and Linux.
 
 ---
 
@@ -86,7 +86,6 @@ Before running the scripts, you must configure your API keys. Navigate to the `b
 GOOGLE_API_KEY=your_gemini_key
 AWS_ACCESS_KEY_ID=your_aws_key
 AWS_SECRET_ACCESS_KEY=your_aws_secret
-AWS_REGION=us-east-1
 ```
 
 ## 2. Install Dependencies

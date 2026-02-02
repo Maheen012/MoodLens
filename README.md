@@ -1,5 +1,9 @@
 # MoodLens - AI-Powered Mental Wellness Tracker
 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/afa88e55-f9ba-47af-8f08-a20b2cea9aaa" width="427" height="427" alt="Logo 1" />
+</p>
+
 MoodLens is an AI-powered mental health tracking tool focused on mood, stress and reflective journaling, using AI-driven insights to identify emotional patterns and provide personalized suggestions and coping exercises.
 
 MoodLens is designed as a **self-reflection companion**, not a clinical product.
@@ -82,6 +86,8 @@ Start by cloning the MoodLens repository in your terminal and navigating into th
 
 ```bash
 git clone https://github.com/Maheen012/MoodLens.git
+```
+```bash
 cd MoodLens
 ```
 
@@ -91,19 +97,23 @@ You need to install the project libraries for both the backend and frontend.
 
 ### **Backend**
 
-Open your terminal and run:
+In your terminal, run:
 
 ```bash
 cd backend
+```
+```bash
 pip install -r requirements.txt
 ```
 
 ### **Frontend**
 
-Open your terminal and run:
+In your terminal, run:
 
 ```bash
-cd frontend
+cd ../frontend
+```
+```bash
 npm install
 ```
 
@@ -118,7 +128,7 @@ AWS_SECRET_ACCESS_KEY=your_aws_secret
 
 ## 4. Launch the Application
 
-Once dependencies are installed, use the automation scripts to start both servers at once.
+Once dependencies are installed and your API keys are configured, use the automation scripts to start both servers at once.
 
 ### **Windows Users**
 

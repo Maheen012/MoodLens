@@ -71,7 +71,7 @@ This project includes automation scripts to handle dependency installation and s
 ## Prerequisites
 Ensure you have the following installed:
 
-- **Node.js** (v24+) & **npm** (v11+)
+- **Node.js** (v24+)
 - **Python** (3.14+)  
 - **Git**  
 

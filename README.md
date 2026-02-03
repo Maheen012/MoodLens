@@ -44,7 +44,7 @@ MoodLens is a digital self-reflection space. It is not a therapy tool and is not
 ## Tech Stack
 
 **Frontend**
-- React.js  
+- React  
 - Tailwind CSS   
 
 **Backend**

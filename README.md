@@ -114,7 +114,7 @@ npm install
 ```
 
 ## 3. Environment Variables
-Before running the scripts, you must configure your API keys. Navigate to the `backend/` folder and create a `.env` file:
+Before running the scripts, you must configure your API keys. Navigate to the main directory and create a `.env` file:
 
 ```env
 GEMINI_API_KEY=your_gemini_key
